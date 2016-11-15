@@ -34,5 +34,9 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
+    'github' => [
+	'client_id' => '7efd14213c3552740a3e',
+	'client_secret' => '95b0ea52ecb6d390c1b7805256648653c2890300',
+	'redirect' => 'http://112.74.173.24/github/login'
+    ],
 ];
