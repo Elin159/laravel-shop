@@ -26,3 +26,5 @@ Route::get('/weChatLogin', 'LoginController@weChat');
 Route::get('/weChat/login', 'LoginController@weChatLogin');
 
 Route::any('/wechat', 'WechatController@serve');
+
+
