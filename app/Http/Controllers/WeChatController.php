@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Logging\Log;
+use Log;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
