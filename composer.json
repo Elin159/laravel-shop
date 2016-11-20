@@ -8,7 +8,7 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "laravel/socialite": "^2.0",
-	"aimeos/aimeos-laravel": "~2016.04"
+        "overtrue/laravel-wechat": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -43,10 +43,7 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize",
-	    "php artisan vendor:publish --tag=public --force",
-	    "php artisan vendor:publish",
-	    "php artisan migrate"
+            "php artisan optimize"
         ]
     },
     "config": {

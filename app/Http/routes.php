@@ -21,3 +21,8 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/gitLogin', 'LoginController@github');
 Route::get('/github/login', 'LoginController@githubLogin');
+
+Route::get('/weChatLogin', 'LoginController@weChat');
+Route::get('/weChat/login', 'LoginController@weChatLogin');
+
+Route::any('/wechat', 'WechatController@serve');
