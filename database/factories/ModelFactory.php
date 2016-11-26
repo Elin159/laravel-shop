@@ -13,9 +13,20 @@
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->safeEmail,
-        'password' => bcrypt(str_random(10)),
+        'nickname' => $faker->name,
+        'avatar' => $faker->imageUrl(256,256)
+    ];
+});
+
+$factory->define(\App\Mode\UserAuth::class, function (Faker\Generator $faker) {
+    $user_id = \App\User::lists('id')->toArray();
+    return [
+        'user_id' => $faker->randomElement($user_id),
+        'identity' => 2,
+        'identifier' => $faker->safeEmail,
+        'credential' => bcrypt('123456'),
         'remember_token' => str_random(10),
     ];
 });
+
+
