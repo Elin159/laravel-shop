@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web\User;
 
+use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -20,9 +21,22 @@ class UserController extends Controller
         //
     }
 
-    public function userList()
+    public function userList(Request $request)
     {
-        $users = User::all();
+        $options = [];
+        $current_page = $request->get('page', 1);
+        $page_size = $request->get('page_size', 10);
+        if($request->has('search'))
+            if(strlen($request->get('search')))
+                $options['keyword'] = $request->get('search');
+//        $users = User::forPage($current_page, $page_size)->get();
+//        $count = User::count();
+//        $isNext = UserService::IsHasNextPage($count, $current_page, $page_size);
+        $user = UserService::userList($options, $current_page, $page_size);
+        if($user['code'] === 0) {
+            $users = $user['data'];
+        }
+
         return view('backstage.user.userlist',compact('users'));
     }
 

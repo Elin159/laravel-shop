@@ -18,7 +18,11 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        <userlist-app :list="{{ $users }}"></userlist-app>
+        <userlist-app :list="{{ $users['list'] }}"></userlist-app>
+        <div class="text-center">
+            <page-app :total="{{ $users['total'] }}" :page="{{ $users['page'] }}"
+            :count="{{ $users['count'] }}" :isnext="{{ $users['isNext'] }}"></page-app>
+        </div>
     </div>
 
 @endsection
@@ -26,14 +30,18 @@
     @parent
     <script src="{{ asset('js/inspinia.js') }}"></script>
     <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
-
-
-
+    <script type="text/x-template" id="page-template">
+        <div class="btn-group">
+            <button type="button" class="btn btn-white" v-on:click="fontPage(page,'font')"><i class="fa fa-chevron-left"></i></button>
+            <button class="btn btn-white" :class="{ 'active': page==n }" v-on:click="fontPage(n,'children')" v-for="n in pageCount">@{{ n }}</button>
+            <button type="button" class="btn btn-white" v-on:click="fontPage(page, 'next')" :class="{ 'active': !isnext }"><i class="fa fa-chevron-right"></i> </button>
+        </div>
+    </script>
     <script type="text/x-template" id="userList-template">
         <div class="row">
             <div class="col-lg-4" v-for="user in list">
                 <div class="contact-box">
-                    <a href="profile.html">
+                    <a href="javascript:;">
                         <div class="col-sm-4">
                             <div class="text-center">
                                 <img alt="image" class="img-circle m-t-xs img-responsive" v-bind:src="user.avatar">
@@ -49,6 +57,10 @@
                                 San Francisco, CA 94107<br>
                                 <abbr title="Phone">P:</abbr> (123) 456-7890
                             </address>
+                            <div class="text-center">
+                                <button class="btn btn-info " v-on:click="edit(user.id)" type="button"><i class="fa fa-paste"></i> 编辑</button>
+                                <button class="btn btn-info btn-danger" v-on:click="delete(user.id)" type="button"><i class="fa fa-paste"></i> 删除</button>
+                            </div>
                         </div>
                         <div class="clearfix"></div>
                     </a>
@@ -66,7 +78,58 @@
 
         Vue.component('userlist-app', {
             template:'#userList-template',
-            props:['list']
+            props:['list'],
+
+            created:function() {
+                console.dir(this.list)
+            },
+            methods: {
+                edit(id) {
+                    alert(id)
+                }
+            }
+        })
+        Vue.component('page-app', {
+            template:'#page-template',
+            props:['total','page','count','isnext'],
+
+            data() {
+                return {
+                    pageCount:Math.ceil(this.total/this.count)
+                }
+            },
+            methods:{
+                fontPage(page, type) {
+                    if(page >= 1) {
+                        if(type == 'font' && page > 1) {
+                            page -= 1
+                        } else if(type == 'next' && page < this.pageCount){
+                            page += 1
+                        } else if(type == 'children' && page >= 1 && page <= this.pageCount) {
+                            page = page
+                        } else {
+                            return false;
+                        }
+                        var newUrl = '{{ url('/admin/userList') }}'+'?'
+
+
+                        var Url = new UrlParse();
+                        for(key in Url.GET)
+                        {
+                            if(key == 'page' && Url.GET[key]) {
+                                newUrl += 'page=' + page + '&'
+                                continue
+                            } else if(Url.GET[key]) {
+                                newUrl += key + '=' + Url.GET[key] + '&'
+                            }
+                        }
+                        if(!GetQueryString('page')) {
+                            newUrl += 'page=' + page + '&'
+                        }
+                        window.location.href = newUrl
+                    }
+                },
+            }
         })
         new Vue({
             el:'#wrapper'

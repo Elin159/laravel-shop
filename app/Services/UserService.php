@@ -157,4 +157,38 @@ class UserService extends Server
         }
         return self::render(0, 'success', $user_info);
     }
+
+    /**
+     * -- Example start
+     * $options = array(
+     *      'user_id' => '用户id,非必须',
+     *      'keyword' => '查询关键词，可不传',
+     *      'order_time' => '注册时间排序'
+     * )
+     * 用户列表详情
+     * @param array $options 集合数据
+     * @param int $page 当前页码
+     * @param int $count 每页显示条数
+     * @return array
+     */
+    public static function userList($options = [], $page = 1, $count = 10)
+    {
+        $query = User::where('id','>',0);
+        if(isset($options['keyword'])&&strlen($options['keyword']) > 0) {
+            $query = $query->where('nickname', 'like', '%' . $options['keyword'] . '%');
+        }
+        $total = User::count();
+        if($page > ceil($total/$count)) {
+            $page = ceil($total/$count);
+        }
+        $user  = $query->forPage($page, $count)->get();
+        $result = [
+            'list' => $user,
+            'total' => $total,
+            'page' => $page,
+            'count' => $count,
+            'isNext' => self::IsHasNextPage($total, $page, $count)
+        ];
+        return self::render(0, 'success', $result);
+    }
 }
