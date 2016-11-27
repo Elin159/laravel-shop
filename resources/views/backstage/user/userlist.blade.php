@@ -59,7 +59,7 @@
                             </address>
                             <div class="text-center">
                                 <button class="btn btn-info " v-on:click="edit(user.id)" type="button"><i class="fa fa-paste"></i> 编辑</button>
-                                <button class="btn btn-info btn-danger" v-on:click="delete(user.id)" type="button"><i class="fa fa-paste"></i> 删除</button>
+                                <button class="btn btn-info btn-danger" v-on:click="deleteTo(user.id)" type="button"><i class="fa fa-paste"></i> 删除</button>
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -85,6 +85,9 @@
             },
             methods: {
                 edit(id) {
+                    alert(id)
+                },
+                deleteTo(id) {
                     alert(id)
                 }
             }
