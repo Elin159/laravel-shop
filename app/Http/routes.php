@@ -30,12 +30,14 @@ Route::any('/wechat', 'WechatController@serve');
 Route::get('/users', 'WeChat\UserController@users');
 Route::get('/user/{userId}', 'WeChat\UserController@user');
 
+
 Route::get('/login', function () {
     return view('user.auth.login');
 });
 
 Route::group(['prefix'=> 'admin'], function () {
     Route::get('userList', 'Web\User\UserController@userList');
+    Route::resource('user','Web\User\UserController');
 });
 
 Route::get('/aaa', function() {

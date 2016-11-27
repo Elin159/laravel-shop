@@ -191,4 +191,44 @@ class UserService extends Server
         ];
         return self::render(0, 'success', $result);
     }
+
+    /**
+     * 修改用户密码
+     * @param $userId
+     * @param $oldPassword
+     * @param $newPassword
+     * @return array
+     */
+    public static function editPassword($userId, $oldPassword, $newPassword)
+    {
+        if(strlen($userId) === 0) {
+            return self::render(1, '用户id有误');
+        }
+
+        if(strlen($oldPassword) === 0) {
+            return self::render(2, '密码必须填写');
+        }
+
+        if(strlen($newPassword) === 0) {
+            return self::render(3, '密码必须填写');
+        }
+
+        $user = User::where('id',$userId)->first();
+        if(!$user) {
+            return self::render(4, '寻找不到该用户信息');
+        }
+        $auths = $user->userAuths()->where('identity', 3)->first();
+        if(!$auths) {
+            return self::render(5, '账号非法，请联系管理员');
+        }
+
+        $salt = UserService::encrypt($oldPassword,$auths->credential);
+        if($salt != $auths->credential) {
+            return self::render(6, '原密码输入错误');
+        }
+        $user->toEditPassword($newPassword);
+
+        return self::render(0, 'success');
+
+    }
 }

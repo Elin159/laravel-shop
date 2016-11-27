@@ -12,7 +12,7 @@
                     App Views
                 </li>
                 <li class="active">
-                    <strong>Contacts</strong>
+                    <strong>用户列表</strong>
                 </li>
             </ol>
         </div>
@@ -25,9 +25,10 @@
         </div>
     </div>
 
-@endsection
+@stop
 @section('script')
-    @parent
+@parent
+
     <script src="{{ asset('js/inspinia.js') }}"></script>
     <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
     <script type="text/x-template" id="page-template">
@@ -45,17 +46,17 @@
                         <div class="col-sm-4">
                             <div class="text-center">
                                 <img alt="image" class="img-circle m-t-xs img-responsive" v-bind:src="user.avatar">
-                                <div class="m-t-xs font-bold">@{{ user.nickname }}</div>
+                                <div class="m-t-xs font-bold">职位</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
-                            <h3><strong>John Smith</strong></h3>
+                            <h3><strong>@{{ user.nickname }}</strong></h3>
                             <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
                             <address>
                                 <strong>Twitter, Inc.</strong><br>
-                                795 Folsom Ave, Suite 600<br>
+                                创建时间:@{{ user.created_at }}<br>
                                 San Francisco, CA 94107<br>
-                                <abbr title="Phone">P:</abbr> (123) 456-7890
+                                <abbr title="Phone">联系电话:</abbr> (123) 456-7890
                             </address>
                             <div class="text-center">
                                 <button class="btn btn-info " v-on:click="edit(user.id)" type="button"><i class="fa fa-paste"></i> 编辑</button>
@@ -70,11 +71,12 @@
     </script>
 
     <script>
-        $(document).ready(function(){
-            $('.contact-box').each(function() {
-                animationHover(this, 'pulse');
-            });
-        });
+
+//        $(document).ready(function(){
+//            $('.contact-box').each(function() {
+//                animationHover(this, 'pulse');
+//            });
+//        });
 
         Vue.component('userlist-app', {
             template:'#userList-template',
@@ -85,7 +87,7 @@
             },
             methods: {
                 edit(id) {
-                    alert(id)
+                    window.location.href = '{{ url('/admin/user') }}'+ '/' +id
                 },
                 deleteTo(id) {
                     alert(id)
@@ -138,4 +140,4 @@
             el:'#wrapper'
         })
     </script>
-@endsection
+@stop

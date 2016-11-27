@@ -19,7 +19,7 @@ class Server
         }
         return [
             'code'      => $code,
-            'message'   => $message,
+            'msg'   => $message,
             'data'      => $data
         ];
 

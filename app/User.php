@@ -28,4 +28,13 @@ class User extends Model
     public function userAuths() {
         return $this->hasMany(UserAuth::class,'user_id','id');
     }
+
+    public function toEditPassword($password) {
+        $userAuths = $this->userAuths;
+        foreach($userAuths as $userAuth) {
+            $userAuth->credential = bcrypt($password);
+            $userAuth->save();
+        }
+        return true;
+    }
 }

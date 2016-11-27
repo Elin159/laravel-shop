@@ -40,6 +40,10 @@ class UserController extends Controller
         return view('backstage.user.userlist',compact('users'));
     }
 
+    public function userDetail($userId)
+    {
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -69,7 +73,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = UserService::userInfo($id);
+        if($user['code'] === 0) {
+            $users = $user['data'];
+        }
+        return view('backstage.user.userdetail', compact('users'));
     }
 
     /**
@@ -92,7 +100,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $result = UserService::editPassword($id,$request->get('oldPas'),$request->get('newPas'));
+        if($result['code'] === 0) {
+            return redirect("admin/user/{$id}")->with('status','success');
+        } else {
+            return redirect("admin/user/{$id}")->with('status',$result['msg']);
+        }
     }
 
     /**

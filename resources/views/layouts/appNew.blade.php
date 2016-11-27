@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@section('title')@show</title>
+    <link href="{{ asset('css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
@@ -202,10 +203,10 @@
 
     <div id="page-wrapper" class="gray-bg">
 
-        @include('.layouts.backstage.head')
+        @include('layouts.backstage.head')
         @section('content')
         @show
-        @include('.layouts.backstage.foot')
+        @include('layouts.backstage.foot')
 
 
     </div>
@@ -215,59 +216,79 @@
 </body>
 
 <script src="//cdn.bootcss.com/vue/2.0.1/vue.js"></script>
-<script>
-    UrlParse = function() {
-        this.host = location.host;
-        //this.GET  = _GET();
-        this.url = location.herf;
-        this.hash = location.hash;
-        this.port = location.port;
-        this.script_name = location.pathname;
-        this.quartyString = location.search;
-        this.protocol = location.protocol;
-        this.GET = this.parseArguement();
-    }
-    UrlParse.prototype = {
-        parseArguement:function (){
-            var pos;
-            var arg = new Object();
-            var quire = location.search.substring(1);
-            var pair = quire.split("&");
-            if(pair.length > 0)
-            {
-                for(var i=0;i < pair.length ;i++)
-                {
-                    pos = pair[i].indexOf("=");
-                    if(pos == -1) continue;
-                    argName  = pair[i].substring(0,pos);
-                    argValue = pair[i].substring(pos+1);
-                    arg[argName] = argValue;
-                }
-            }else
-            {
-                de = quire.indexOf("=");
-                if(de != -1)
-                {
-                    argName  = pair[i].substring(0,de);
-                    argValue = pair[i].substring(de+1);
-                    arg[argName] = argValue;
-                }
-            }
-            return arg;
-        }
-    }
 
-    function GetQueryString(name){
-        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if(r!=null)return  unescape(r[2]); return null;
-    }
-</script>
 @section('script')
     <!-- Mainly scripts -->
+
     <script src="{{ asset('js/jquery-2.1.1.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
     <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/toastr/toastr.min.js') }}"></script>
+    <script>
+        UrlParse = function() {
+            this.host = location.host;
+            //this.GET  = _GET();
+            this.url = location.herf;
+            this.hash = location.hash;
+            this.port = location.port;
+            this.script_name = location.pathname;
+            this.quartyString = location.search;
+            this.protocol = location.protocol;
+            this.GET = this.parseArguement();
+        }
+        UrlParse.prototype = {
+            parseArguement:function (){
+                var pos;
+                var arg = new Object();
+                var quire = location.search.substring(1);
+                var pair = quire.split("&");
+                if(pair.length > 0)
+                {
+                    for(var i=0;i < pair.length ;i++)
+                    {
+                        pos = pair[i].indexOf("=");
+                        if(pos == -1) continue;
+                        argName  = pair[i].substring(0,pos);
+                        argValue = pair[i].substring(pos+1);
+                        arg[argName] = argValue;
+                    }
+                }else
+                {
+                    de = quire.indexOf("=");
+                    if(de != -1)
+                    {
+                        argName  = pair[i].substring(0,de);
+                        argValue = pair[i].substring(de+1);
+                        arg[argName] = argValue;
+                    }
+                }
+                return arg;
+            }
+        }
+
+        function GetQueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "400",
+            "hideDuration": "1000",
+            "timeOut": "7000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+    </script>
 @show
 </html>
