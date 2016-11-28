@@ -38,6 +38,8 @@ Route::get('/login', function () {
 Route::group(['prefix'=> 'admin'], function () {
     Route::get('userList', 'Web\User\UserController@userList');
     Route::resource('user','Web\User\UserController');
+
+    Route::resource('productType', 'Web\Product\ProductTypeController');
 });
 
 Route::get('/aaa', function() {
@@ -58,7 +60,9 @@ Route::get('/aaa', function() {
 //    $deconde = '6d63VFECVFZSAghRAwJXDlYBUQUDAF0AU1pcB1SHv/SD+52N4KGA28LUoM7WtYnRsI2C66DUpsaLufbT38HR/cuBut+IstiA6qPf/pbes6vUjMSFqZzc4dnR5YuE6aaC+8HR5fLW2caEqpeEsYzbuIzX7PLWrJyK46uBisKHr8qB5oON4Y6C7vPVp8TatqHcjZGC+57Wu9iLuNnR6vDQ+sGNufeFj8SA+p3d44jesoQ';
 //    dd(\App\Services\ECoreService::sys_auth($deconde,'DECODE'));
 //    return $user;
-    return view('backstage.user.userlist');
+//    return view('backstage.user.userlist');
+//    dd($items);
+    dd();
     return redirect('/bbb');
 });
 
