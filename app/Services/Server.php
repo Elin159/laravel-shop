@@ -7,7 +7,7 @@ class Server
 
     /**
      * @param int $code 错误号
-     * @param array $message 错误信息或其余信息
+     * @param string $message 错误信息或其余信息
      * @param array $data 数据
      * @return array
      * @throws \Exception

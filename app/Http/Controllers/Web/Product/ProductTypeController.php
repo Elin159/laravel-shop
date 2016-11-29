@@ -24,47 +24,13 @@ class ProductTypeController extends Controller
      */
     public function index()
     {
-        $items = \App\Mode\ProductType::all(['id','name','parent_id'])->toArray();
-        $tree = $this->getThree($items);
+        $tree = ProductService::getThree();
 
         $tree = collect($tree)->toJson();
         return view('backstage.product.type', compact('tree'));
-        //
-        $json = '[{"id":7},{"id":4,"children":[{"id":5,"children":[{"id":3}]}]},{"id":9,"children":[{"id":6,"children":[{"id":8}]}]},{"id":1,"children":[{"id":2}]}]';
-        $trees = json_decode($json,true);
-        dd(ProductService::editProductType($trees));
-
-
-//        dd(array_dot($trees));
-//        dd(collect($tree)->toArray());
-//        $tree = $this->getThree($items);
-//        dd($tree);
-//        dd(array_dot($tree));
-//        dd(array_diff($trees,$tree));
-
     }
 
-    protected function getThree($items) {
-        $tree = [];
-        foreach($items as $key=>$value) {
-            $tree[$value['id']] = $value;
-            $tree[$value['id']]['check'] = false;
-        }
 
-        foreach($tree as $value) {
-            $tree[$value['parent_id']]['children'][$value['id']] = &$tree[$value['id']];
-            $tree[$value['parent_id']]['check'] = true;
-        }
-        unset($tree[0]);
-        foreach($tree as $key => $value) {
-
-            if($value['parent_id'] !== 0) {
-                unset($tree[$key]);
-            }
-        }
-
-        return $tree;
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -134,6 +100,10 @@ class ProductTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = ProductService::deleteType($id);
+        if($result['code'] === 0) {
+            return response()->json(['code'=>0, 'msg'=>$result['msg'], 'data'=>$result['data']]);
+        }
+        return response()->json(['code'=>1, 'msg'=>$result['msg']]);
     }
 }
