@@ -65,63 +65,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5>商品分类列表</h5>
-                </div>
-                <div class="ibox-content">
-
-                    <p  class="m-b-lg">
-                        <strong>注意</strong> 拖动操作进行分类的层级排列
-                    </p>
-                    <type-tree-app :list="{{ $tree }}" ></type-tree-app>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>添加分类</h5>
-                </div>
-                <div class="ibox-content">
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <type-tree-app :list="{{ $tree }}"></type-tree-app>
 @stop
 
 @section('script')
@@ -130,52 +74,130 @@
 
     <script src="{{ asset('js/inspinia.js') }}"></script>
     <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
+    <script type="text/x-template" id="type-from-template">
+
+    </script>
     <script type="text/x-template" id="type-tree-template">
-        <div class="dd" id="nestable3">
-            <ol class="dd-list">
-                <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(one,index) in list">
-                    <div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">@{{ one.name }}
-                        <a href="javascript:;" class="pull-right" v-if="!one.check" v-on:click="deleteType(index)">删除</a>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>商品分类列表</h5>
                     </div>
-                    <ol class="dd-list" v-if="one.check">
-                        <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(two,index) in one.children">
-                            <div class="dd-handle dd3-handle">Drag</div>
-                            <div class="dd3-content">@{{ two.name }}
-                                <a href="javascript:;" class="pull-right" v-if="!two.check" v-on:click="deleteType(index,two.name)">删除</a>
-                            </div>
-                            <ol class="dd-list" v-if="two.check">
-                                <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(three,index) in two.children">
-                                    <div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">@{{ three.name }}
-                                        <a href="javascript:;" class="pull-right" v-if="!three.check" v-on:click="deleteType(index)">删除</a>
+                    <div class="ibox-content">
+
+                        <p  class="m-b-lg">
+                            <strong>注意</strong> 拖动操作进行分类的层级排列
+                        </p>
+                        <div class="dd" id="nestable3">
+                            <ol class="dd-list first">
+                                <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(one,index) in users">
+                                    <div class="dd-handle dd3-handle">Drag</div>
+                                    <div class="dd3-content">
+                                        <span v-if="tel.check && tel.id==one.id"><input type="text" v-model="pushname" v-bind:value="one.name"></span>
+                                        <span v-else>@{{ one.name }}</span>
+                                        <div class="pull-right">
+                                            <a href="javascript:;" v-if="tel.check && tel.id==one.id" v-on:click="pushType(one.id)">提交</a>
+                                            <a href="javascript:;" v-else v-on:click="edit(index,one.name)">编辑</a>
+                                            <a href="javascript:;" v-if="!one.check" v-on:click="deleteType(index,one.name)">&nbsp;&nbsp;删除</a>
+                                        </div>
                                     </div>
-                                    <ol class="dd-list" v-if="three.check">
-                                        <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(four,index) in three.children">
-                                            <div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">@{{ four.name }}
-                                                <a href="javascript:;" class="pull-right" v-if="!four.check" v-on:click="deleteType(index)">删除</a>
+                                    <ol class="dd-list" v-if="one.check">
+                                        <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(two,index) in one.children">
+                                            <div class="dd-handle dd3-handle">Drag</div>
+                                            <div class="dd3-content">
+                                                <span v-if="tel.check && tel.id==two.id"><input type="text" v-model="pushname" v-bind:value="two.name"></span>
+                                                <span v-else>@{{ two.name }}</span>
+                                                <div class="pull-right">
+                                                    <a href="javascript:;" v-if="tel.check && tel.id==two.id" v-on:click="pushType(two.id)">提交</a>
+                                                    <a href="javascript:;" v-else v-on:click="edit(index,two.name)">编辑</a>
+                                                    <a href="javascript:;" v-if="!two.check" v-on:click="deleteType(index,two.name)">&nbsp;&nbsp;删除</a>
+                                                </div>
                                             </div>
-                                            <ol class="dd-list" v-if="four.check">
-                                                <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(five,index) in four.children">
-                                                    <div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">@{{ four.name }}
-                                                        <a href="javascript:;" class="pull-right" v-if="!five.check" v-on:click="deleteType(index)">删除</a>
+                                            <ol class="dd-list" v-if="two.check">
+                                                <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(three,index) in two.children">
+                                                    <div class="dd-handle dd3-handle">Drag</div>
+                                                    <div class="dd3-content">
+                                                        <span v-if="tel.check && tel.id==three.id"><input type="text" v-model="pushname" v-bind:value="three.name"></span>
+                                                        <span v-else>@{{ three.name }}</span>
+                                                        <div class="pull-right">
+                                                            <a href="javascript:;" v-if="tel.check && tel.id==three.id" v-on:click="pushType(three.id)">提交</a>
+                                                            <a href="javascript:;" v-else v-on:click="edit(index,three.name)">编辑</a>
+                                                            <a href="javascript:;" v-if="!three.check" v-on:click="deleteType(index,three.name)">&nbsp;&nbsp;删除</a>
+                                                        </div>
                                                     </div>
+                                                    <ol class="dd-list" v-if="three.check">
+                                                        <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(four,index) in three.children">
+                                                            <div class="dd-handle dd3-handle">Drag</div>
+                                                            <div class="dd3-content">
+                                                                <span v-if="tel.check && tel.id==four.id"><input type="text" v-model="pushname" v-bind:value="four.name"></span>
+                                                                <span v-else>@{{ four.name }}</span>
+                                                                <div class="pull-right">
+                                                                    <a href="javascript:;" v-if="tel.check && tel.id==four.id" v-on:click="pushType(four.id)">提交</a>
+                                                                    <a href="javascript:;" v-else v-on:click="edit(index,four.name)">编辑</a>
+                                                                    <a href="javascript:;" v-if="!four.check" v-on:click="deleteType(index,four.name)">&nbsp;&nbsp;删除</a>
+                                                                </div>
+                                                            </div>
+                                                            <ol class="dd-list" v-if="four.check">
+                                                                <li class="dd-item dd3-item" v-bind:data-id="index" v-for="(five,index) in four.children">
+                                                                    <div class="dd-handle dd3-handle">Drag</div>
+                                                                    <div class="dd3-content">
+                                                                        <span v-if="tel.check && tel.id==five.id"><input type="text" v-model="pushname" v-bind:value="five.name"></span>
+                                                                        <span v-else>@{{ five.name }}</span>
+                                                                        <div class="pull-right">
+                                                                            <a href="javascript:;" v-if="tel.check && tel.id==five.id" v-on:click="pushType(five.id)">提交</a>
+                                                                            <a href="javascript:;" v-else v-on:click="edit(index,five.name)">编辑</a>
+                                                                            <a href="javascript:;" v-if="!five.check" v-on:click="deleteType(index,five.name)">&nbsp;&nbsp;删除</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ol>
+                                                        </li>
+                                                    </ol>
                                                 </li>
                                             </ol>
                                         </li>
                                     </ol>
                                 </li>
                             </ol>
-                        </li>
-                    </ol>
-                </li>
-            </ol>
 
-            <p></p>
-            <div class="text-center">
-                <button class="btn btn-primary " v-on:click="go()" type="button"><i class="fa fa-check"></i>&nbsp;提交</button>
+                            <p></p>
+                            <div class="text-center">
+                                <button class="btn btn-primary " v-on:click="go()" type="button"><i class="fa fa-check"></i>&nbsp;提交</button>
 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>添加分类</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form class="form-horizontal" @submit.prevent="submit">
+                            <p>添加的分类名默认为顶级</p>
+                            <div class="form-group"><label class="col-lg-2 control-label">分类名</label>
 
+                                <div class="col-lg-10">
+                                    <input type="text" placeholder="分类名字" v-model="name" class="form-control" data-form-un="1480476325436.1128">
+                                    <span class="help-block m-b-none">请输入您要添加的分类名</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button class="btn btn-sm btn-white" type="submit" data-form-sbm="1480476325436.1128">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
     </script>
     <script>
         $(document).ready(function(){
@@ -184,12 +206,21 @@
             Vue.component('type-tree-app', {
                 template:'#type-tree-template',
                 props:['list'],
-                created:function() {
-                    console.dir(this.list)
+                data() {
+                    return {
+                        users:this.list,
+                        name:'',
+                        tel:{check:false,id:''},
+                        pushname:''
+                    }
                 },
                 methods:{
                     go() {
-                        if(old != '')
+                        if(this.tel.check) {
+                            toastr.error('提交失败','请提交修改数据')
+                            return false
+                        }
+                        if(old && !JSON.parse(old).context)
                             this.$http.post('{{ url('admin/productType') }}',{data:old}).then((response) => {
                                 // success callback
                                 var result = response.data
@@ -226,10 +257,54 @@
                             });
                             }
 
+                    },
+                    submit:function() {
+                        if(!this.name) {
+                            toastr.error('添加失败','提交的数据为空')
+                        } else {
+                            this.$http.post('{{ url('admin/addType') }}', {name:this.name}).then((response) => {
+                                var result = response.data
+                                if(result.code === 0) {
+                                    window.location.reload()
+                                    this.name = ''
+                                    old = ''
+                                } else {
+                                    toastr.error('修改失败',result.msg)
+                                }
+                            }, (response) => {
+                                toastr.error('修改失败','系统出错')
+                                // error callback
+                            }).bind(this);
+                        }
+                    },
+                    edit(id,name) {
+                        this.tel.check = !this.tel.check
+                        this.tel.id = id
+                        this.pushname = name
+                        old = ''
+                        console.dir(old)
+                    },
+                    pushType(id) {
+                        if(this.pushname && id) {
+                            this.$http.put('{{ url('admin/productType') }}'+'/'+id, {name:this.pushname}).then((response) => {
+                                var result = response.data
+                                if(result.code === 0) {
+                                    this.pushname = ''
+                                    this.tel.check = false
+                                    this.tel.id    = ''
+                                    window.location.reload()
+                                } else {
+                                    toastr.error('修改名字失败',result.msg)
+                                }
+
+                            }, (response) => {
+                                toastr.error('修改名字失败','服务器繁忙')
+                            })
+                        }
                     }
                 }
             })
-            new Vue({
+            var vm = new Vue({
                 el:'#wrapper'
             })
 

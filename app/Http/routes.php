@@ -40,6 +40,7 @@ Route::group(['prefix'=> 'admin'], function () {
     Route::resource('user','Web\User\UserController');
 
     Route::resource('productType', 'Web\Product\ProductTypeController');
+    Route::post('addType', 'Web\Product\ProductTypeController@addProductType');
 });
 
 Route::get('/aaa', function() {

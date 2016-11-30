@@ -58,8 +58,13 @@ class ProductService extends Server {
         }
     }
 
-    public static function getThree($items = '') {
-        if(!$items) {
+    /**
+     * 获取树状结构
+     * @param array $items 一维数组
+     * @return array
+     */
+    public static function getThree(array $items = []) {
+        if(count($items) === 0) {
             $item = new static();
             $items = $item->items;
         }
@@ -98,6 +103,64 @@ class ProductService extends Server {
         $tree = ProductService::getThree();
         $trees = collect($tree)->toJson();
         return self::render(0, 'success', $trees);
+    }
+
+    /**
+     * 添加分类
+     * @param string $name 分类名字
+     * @return array
+     */
+    public static function addType($name)
+    {
+        if(strlen($name) === 0) {
+            return self::render(1, '参数有误');
+        }
+
+        if(!is_string($name) || is_numeric($name)) {
+            return self::render(2,'参数必须为字符串');
+        }
+
+        $product = ProductType::create([
+            'name' => $name,
+            'parent_id' => 0,
+            'path' => '0,',
+        ]);
+
+        if(!$product) {
+            return self::render(3, '服务器繁忙');
+        }
+
+        return self::render(0, 'success', $product);
+
+    }
+
+    /**
+     * 修改分类名
+     * @param int $id 分类id
+     * @param string $name 名字
+     * @return array
+     */
+    public static function editName($id,$name)
+    {
+        if(strlen($id) === 0 || strlen($name) === 0) {
+            return self::render(1, '参数有误');
+        }
+
+        if(!is_numeric($id)) {
+            return self::render(2, '不存在id值');
+        }
+
+        if(!is_string($name) || is_numeric($name)) {
+            return self::render(3, '名字必须是字符串');
+        }
+
+        $type = ProductType::where('id',$id)->update(['name'=>$name]);
+
+        if($type) {
+            return self::render(0, 'success');
+        }
+
+        return self::render(4, '服务器繁忙');
     }
 
 }

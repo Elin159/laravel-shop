@@ -25,7 +25,6 @@ class ProductTypeController extends Controller
     public function index()
     {
         $tree = ProductService::getThree();
-
         $tree = collect($tree)->toJson();
         return view('backstage.product.type', compact('tree'));
     }
@@ -89,7 +88,12 @@ class ProductTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $type = ProductService::editName($id,$request->get('name', ''));
+
+        if($type['code'] === 0) {
+            return response()->json(['code'=>0,'msg'=>'success']);
+        }
+        return response()->json(['code'=>1,'msg'=>$type['msg']]);
     }
 
     /**
@@ -105,5 +109,22 @@ class ProductTypeController extends Controller
             return response()->json(['code'=>0, 'msg'=>$result['msg'], 'data'=>$result['data']]);
         }
         return response()->json(['code'=>1, 'msg'=>$result['msg']]);
+    }
+
+    /**
+     * 添加分类名字
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addProductType(Request $request) {
+        if(!$request->has('name') || strlen($request->get('name')) === 0) {
+            return response()->json(['code'=>1,'msg'=>'参数非法']);
+        }
+
+        $type = ProductService::addType($request->get('name'));
+        if($type['code'] === 0) {
+            return response()->json(['code'=>0, 'msg'=>'success', 'data'=>$type['data']]);
+        }
+        return response()->json(['code'=>$type['code'], 'msg'=>$type['msg']]);
     }
 }
