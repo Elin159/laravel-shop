@@ -14,5 +14,7 @@ class ProductType extends Model
         'id','name','parent_id','path'
     ];
 
-
+    public function products() {
+        return $this->hasMany(Product::class);
+    }
 }

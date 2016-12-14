@@ -282,7 +282,6 @@
                         this.tel.id = id
                         this.pushname = name
                         old = ''
-                        console.dir(old)
                     },
                     pushType(id) {
                         if(this.pushname && id) {

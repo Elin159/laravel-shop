@@ -174,7 +174,7 @@ class UserService extends Server
     public static function userList($options = [], $page = 1, $count = 10)
     {
         $query = User::where('id','>',0);
-        if(isset($options['keyword'])&&strlen($options['keyword']) > 0) {
+        if(isset($options['keyword']) && strlen($options['keyword']) > 0) {
             $query = $query->where('nickname', 'like', '%' . $options['keyword'] . '%');
         }
         $total = User::count();

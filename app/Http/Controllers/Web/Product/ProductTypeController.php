@@ -29,18 +29,6 @@ class ProductTypeController extends Controller
         return view('backstage.product.type', compact('tree'));
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -55,28 +43,6 @@ class ProductTypeController extends Controller
             }
 
             return response()->json(['code'=>0,'msg'=>'修改成功']);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -126,5 +92,19 @@ class ProductTypeController extends Controller
             return response()->json(['code'=>0, 'msg'=>'success', 'data'=>$type['data']]);
         }
         return response()->json(['code'=>$type['code'], 'msg'=>$type['msg']]);
+    }
+
+    public function findType(Request $request)
+    {
+        if($request->method() != 'POST') {
+            return response()->json(['code'=>1, 'msg'=>'请求出错', 'data' => $request->method()]);
+        }
+        $types = ProductType::where('parent_id', $request->get('id'))->get();
+        if(count($types)) {
+            return response()->json(['code' => 0, 'msg' => 'success', 'data' => $types]);
+        } else {
+            return response()->json(['code' => 0, 'msg' => 'success', 'data' => '']);
+        }
+
     }
 }

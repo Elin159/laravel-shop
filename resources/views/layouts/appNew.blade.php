@@ -21,7 +21,7 @@
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">--}}
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
-    <script src="//cdn.bootcss.com/vue/2.0.1/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.0.8/vue.js"></script>
     <script src="//cdn.bootcss.com/vue-resource/1.0.0/vue-resource.js"></script>
     <script>
         Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name=csrf-token]').getAttribute('content')

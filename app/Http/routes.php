@@ -41,6 +41,12 @@ Route::group(['prefix'=> 'admin'], function () {
 
     Route::resource('productType', 'Web\Product\ProductTypeController');
     Route::post('addType', 'Web\Product\ProductTypeController@addProductType');
+    Route::post('type', 'Web\Product\ProductTypeController@findType');
+    Route::group(['prefix' => 'product'], function() {
+        Route::post('avatar', 'Web\Product\ProductController@avatar');
+    });
+
+    Route::resource('product', 'Web\Product\ProductController');
 });
 
 Route::get('/aaa', function() {
